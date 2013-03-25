@@ -82,23 +82,23 @@ public class AlphabetGenerator {
     }
 
     /**
-     * get any random position within maxPosition
-     * @param maxPosition
+     * get any random position within numElements
+     * @param numElements
      * @return
      */
-    private static int getRandomPosition(int maxPosition) {
-        return getRandomPosition(maxPosition, NO_EXCLUDE);
+    private static int getRandomPosition(int numElements) {
+        return getRandomPosition(numElements, NO_EXCLUDE);
     }
 
     /**
-     * get a random position less than maxPosition, and exclude exclude number
-     * @param maxPosition
+     * get a random position less than numElements, and exclude exclude number
+     * @param numElements
      * @param exclude
      * @return
      */
-    private static int getRandomPosition(int maxPosition, int exclude) {
+    private static int getRandomPosition(int numElements, int exclude) {
         while(true) {
-            int position = (int) Math.floor(Math.random() * (double) maxPosition);
+            int position = (int) Math.floor(Math.random() * (double) numElements);
             if (position != exclude) {
                 return position;
             }

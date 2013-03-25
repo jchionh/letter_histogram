@@ -103,6 +103,12 @@ public class FrequencyHistogram {
         return getRandomAlphabet(false);
     }
 
+    /**
+     * we get a random alphabet, and we can say if it's
+     * a vowel or not
+     * @param isVowel
+     * @return
+     */
     public String getRandomAlphabet(boolean isVowel) {
         List vowelsList = Arrays.asList(Alphabets.getVowels());
         int tries = 0;
