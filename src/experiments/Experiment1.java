@@ -1,14 +1,47 @@
+package experiments;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.*;
 
-public class Main {
+public class Experiment1 {
 
-    public static void main(String[] args) {
+    private static final String letters[] = {
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j",
+            "k",
+            "l",
+            "m",
+            "n",
+            "o",
+            "p",
+            "q",
+            "r",
+            "s",
+            "t",
+            "u",
+            "v",
+            "w",
+            "x",
+            "y",
+            "z",
+    };
+
+    public static void experiment(String[] args) {
 	    // write your code here
-        String filePath = "data/words/text.txt";
+        //String filePath = "data/words/text.txt";
+        String filePath = "data/words/sowpods_3_5.txt";
+
         URL path = ClassLoader.getSystemResource(filePath);
 
         // now let's open the file for reading
@@ -19,7 +52,8 @@ public class Main {
             try {
 
                 HashSet<String> seenWords = new HashSet<String>();
-                Map<String, Float> histogram = new HashMap<String, Float>();
+                Map<String, Float> globalFreqHistogram = new HashMap<String, Float>();
+                Map<String, Float> globalCountHistogram = new HashMap<String, Float>();
 
                 // a reusable field we will use for reflection in case 4
                 Field field = String.class.getDeclaredField("value");
@@ -33,6 +67,7 @@ public class Main {
 
                 // this is our word count
                 int wordCount = 0;
+                int letterCount = 0;
 
                 // iterate for every word that we pick up
                 while (scanner.hasNext()) {
@@ -57,9 +92,10 @@ public class Main {
                             //System.out.println("process: " + processedWord + " [" + wordLength + "]");
 
                             for (int i = 0; i < wordLength; ++i) {
+                                letterCount++;
                                 //System.out.println("char: " + chars[i]);
                                 String charAsString = Character.toString(chars[i]);
-                                Float count = histogram.get(charAsString);
+                                Float count = currentHistogram.get(charAsString);
                                 if (count == null) {
                                     currentHistogram.put(charAsString, 1.0f);
                                     //System.out.println(charAsString + " 1.0f");
@@ -70,14 +106,28 @@ public class Main {
                                 }
                             }
 
+                            System.out.println("(" + processedWord + ")");
                             // now compute the frequency of the letter in the word
-                            // now let's print out letter count
+                            // let's compute the global average frequency so far
                             Iterator entries = currentHistogram.entrySet().iterator();
                             while(entries.hasNext()) {
                                 Map.Entry<String, Float> entry = (Map.Entry<String, Float>) entries.next();
                                 String letter = entry.getKey();
                                 Float count = entry.getValue();
-                                System.out.println("[" + letter + "]: " + count + " " + (count.floatValue() / (float) wordLength));
+                                Float localFreq = (count.floatValue() / (float) wordLength);
+
+                                // get the global letter frequency
+                                Float freq = globalFreqHistogram.get(letter);
+                                if (freq == null) {
+                                    globalFreqHistogram.put(letter, localFreq);
+                                    globalCountHistogram.put(letter, 1.0f);
+                                } else {
+                                    Float computedFreq = ((freq.floatValue() * ((float) wordCount - 1.0f)) + localFreq) / (float) wordCount;
+                                    globalFreqHistogram.put(letter, computedFreq);
+                                    Float globalCount = globalCountHistogram.get(letter);
+                                    globalCountHistogram.put(letter, globalCount + count);
+                                }
+                                System.out.println("\t[" + letter + "] c: " + count + " f: " + (count.floatValue() / (float) wordLength));
                             }
 
 
@@ -88,12 +138,32 @@ public class Main {
                 }
 
                 // now let's print out letter count
-                Iterator entries = histogram.entrySet().iterator();
+                //Iterator entries = globalFreqHistogram.entrySet().iterator();
+                Iterator entries = globalCountHistogram.entrySet().iterator();
+
+                //float divisor = (float) letterCount / 26.0f;
+                float total = 0.0f;
+
                 while(entries.hasNext()) {
                     Map.Entry<String, Float> entry = (Map.Entry<String, Float>) entries.next();
                     String letter = entry.getKey();
                     Float count = entry.getValue();
-                    System.out.println("[" + letter + "]: " + count);
+                    float normz = count.floatValue() / (float)letterCount;
+                    total += normz;
+                    System.out.println("[" + letter + "] c: " + count + " f: " + normz);
+                }
+                System.out.println("Letter Count: " + letterCount + " total n: " + total);
+
+                float cumulate = 0.0f;
+
+                // go thru every letter and build a cumulative histogram
+                for (int i = 0; i < letters.length; ++i) {
+                    Float count = globalCountHistogram.get(letters[i]);
+                    if (count == null) {
+                        count = 0.0f;
+                    }
+                    cumulate += count.floatValue() / (float)letterCount;
+                    System.out.println("[" + letters[i] + "] cumulative: " + cumulate);
 
                 }
 
@@ -107,13 +177,6 @@ public class Main {
                 System.out.println(e);
             }
         }
-
-
-
-
-
-
-
 
     }
 }
