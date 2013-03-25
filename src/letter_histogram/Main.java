@@ -38,7 +38,7 @@ public class Main {
         AlphabetGenerator alphaGenerator = new AlphabetGenerator(NUM_CHARACTERS, PERCENT_VOWELS);
         alphaGenerator.setHistogram(freqHistogram);
 
-        for (int times = 0; times < 6; ++times) {
+        for (int times = 0; times < 1; ++times) {
             String characters[] = alphaGenerator.generateCharacters();
             System.out.println("---------------");
             for (int y = 0; y < NUM_ROWS; ++y) {
