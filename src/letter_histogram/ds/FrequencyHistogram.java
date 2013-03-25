@@ -5,10 +5,7 @@ import letter_histogram.constants.Alphabets;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * User: jchionh
@@ -21,6 +18,7 @@ public class FrequencyHistogram {
 
     private URL urlToWords;
     private Map<String, Integer> freqHistogram = new HashMap<String, Integer>();
+    private Map<String, Float> cHistogram = new HashMap<String, Float>();
     private int totalLetters = 0;
 
     // ctor
@@ -33,10 +31,7 @@ public class FrequencyHistogram {
         if (urlToWords == null) {
             throw new NullPointerException("[FrequencyHistogram] must init with a non null URL");
         }
-
         this.urlToWords = urlToWords;
-
-
     }
 
     /**
@@ -53,6 +48,98 @@ public class FrequencyHistogram {
             System.out.println("[" + alphabets[i] + "] c: " + realCount);
         }
         System.out.println("Total letters: " + totalLetters);
+    }
+
+    /**
+     * debug print our cumulative histogram
+     */
+    public void printCumulativeHistogram() {
+        String alphabets[] = Alphabets.getAlphabets();
+        for (int i = 0; i < alphabets.length; ++i) {
+            Float value = cHistogram.get(alphabets[i]);
+            float realValue = 0.0f;
+            if (value != null) {
+                realValue = value.floatValue();
+            }
+            System.out.println("[" + alphabets[i] + "] c: " + realValue);
+        }
+        System.out.println("Total letters: " + totalLetters);
+    }
+
+    /**
+     * here we get a random alphabet
+     * @return
+     */
+    public String getRandomAplhabet() {
+        float randomNumber = (float) Math.random();
+        String alphabets[] = Alphabets.getAlphabets();
+        for (int i = 0; i < alphabets.length; ++i) {
+            Float value = cHistogram.get(alphabets[i]);
+            float realValue = 0.0f;
+            if (value != null) {
+                realValue = value.floatValue();
+            }
+            if (randomNumber < realValue) {
+                //System.out.println("rv: " + realValue + " rn: " + randomNumber);
+                return alphabets[i];
+            }
+        }
+        return "*";
+    }
+
+    /**
+     * here we get a random vowel
+     * @return
+     */
+    public String getRandomVowel() {
+        return getRandomAlphabet(true);
+    }
+
+    /**
+     * get a non vowel
+     * @return
+     */
+    public String getRandomNonVowel() {
+        return getRandomAlphabet(false);
+    }
+
+    public String getRandomAlphabet(boolean isVowel) {
+        List vowelsList = Arrays.asList(Alphabets.getVowels());
+        int tries = 0;
+        while(true) {
+            tries++;
+            String character = getRandomAplhabet();
+            if (vowelsList.contains(character) == isVowel) {
+                //System.out.println("alphabet generation tries: " + tries);
+                return character;
+            }
+        }
+    }
+
+    /**
+     * build the cumulative histogram for generating alphabets
+     */
+    private void buildCumulativeHistogram() {
+
+        // don't need to do anything
+        if (totalLetters <= 0) {
+            return;
+        }
+
+        float cumulate = 0.0f;
+
+        String alphabets[] = Alphabets.getAlphabets();
+        for (int i = 0; i < alphabets.length; ++i) {
+            Integer count = freqHistogram.get(alphabets[i]);
+            int realCount = 0;
+            if (count != null) {
+                realCount = count.intValue();
+            }
+            float normalizedFreq = ((float) realCount / (float) totalLetters);
+            // cumulate the freq after normlaization
+            cumulate += normalizedFreq;
+            cHistogram.put(alphabets[i], Float.valueOf(cumulate));
+        }
     }
 
     /**
@@ -80,7 +167,7 @@ public class FrequencyHistogram {
 
             // iterate for every word that we pick up
             while (scanner.hasNext()) {
-                String word = scanner.next().toLowerCase();
+                String word = scanner.next().toUpperCase();
                 if (word.length() > 0) {
                     // now we record our string into the hashset
                     // and only count the letter freqs if it's unique
@@ -106,6 +193,10 @@ public class FrequencyHistogram {
                     }
                 }
             }
+
+            // once we finished building the freq histogram,
+            // let's build the cumulative
+            buildCumulativeHistogram();
 
         } catch (IOException e) {
             System.out.println("[" + TAG + "] " + "Cannot open stream at " + urlToWords.toString());

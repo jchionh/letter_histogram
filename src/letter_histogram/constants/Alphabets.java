@@ -11,33 +11,35 @@ package letter_histogram.constants;
  */
 public class Alphabets {
     private static final String alphabets[] = {
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z",
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z",
     };
+
+    private static final String vowels[] = { "A", "E", "I", "O", "U" };
 
     /**
      * gets a reference to the static alphabet array
@@ -45,5 +47,13 @@ public class Alphabets {
      */
     public static final String[] getAlphabets() {
         return alphabets;
+    }
+
+    /**
+     * get the reference to vowels array
+     * @return
+     */
+    public static final String[] getVowels() {
+        return vowels;
     }
 }
