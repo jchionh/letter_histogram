@@ -38,6 +38,7 @@ public class FrequencyHistogram {
      * just print it!
      */
     public void printFrequencyHistogram() {
+        System.out.println("-- Frequency Histogram --");
         String alphabets[] = Alphabets.getAlphabets();
         for (int i = 0; i < alphabets.length; ++i) {
             Integer count = freqHistogram.get(alphabets[i]);
@@ -54,6 +55,7 @@ public class FrequencyHistogram {
      * debug print our cumulative histogram
      */
     public void printCumulativeHistogram() {
+        System.out.println("-- Cumulative Histogram --");
         String alphabets[] = Alphabets.getAlphabets();
         for (int i = 0; i < alphabets.length; ++i) {
             Float value = cHistogram.get(alphabets[i]);
@@ -61,7 +63,7 @@ public class FrequencyHistogram {
             if (value != null) {
                 realValue = value.floatValue();
             }
-            System.out.println("[" + alphabets[i] + "] c: " + realValue);
+            System.out.println("[" + alphabets[i] + "] " + realValue);
         }
         System.out.println("Total letters: " + totalLetters);
     }

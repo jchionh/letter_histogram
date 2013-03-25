@@ -34,6 +34,7 @@ public class Main {
         FrequencyHistogram freqHistogram = new FrequencyHistogram(path);
         // build it!
         freqHistogram.buildHistogram();
+        //freqHistogram.printCumulativeHistogram();
 
         AlphabetGenerator alphaGenerator = new AlphabetGenerator(NUM_CHARACTERS, PERCENT_VOWELS);
         alphaGenerator.setHistogram(freqHistogram);
