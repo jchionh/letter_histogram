@@ -1,0 +1,16 @@
+*.class
+
+.settings/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# IntelliJ Files #
+.idea/workspace.xml
+.idea/tasks.xml
+*.iws
+
+# mac specific
+.DS_Store
