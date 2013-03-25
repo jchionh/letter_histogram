@@ -2,6 +2,9 @@
 
 .settings/
 
+# application data
+data/
+
 # Package Files #
 *.jar
 *.war
