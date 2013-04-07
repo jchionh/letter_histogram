@@ -18,7 +18,7 @@ public class FrequencyHistogram {
 
     private URL urlToWords;
     private Map<String, Integer> freqHistogram = new HashMap<String, Integer>();
-    private Map<String, Float> cHistogram = new HashMap<String, Float>();
+    private Map<String, Double> cHistogram = new HashMap<String, Double>();
     private int totalLetters = 0;
 
     // ctor
@@ -58,10 +58,10 @@ public class FrequencyHistogram {
         System.out.println("-- Cumulative Histogram --");
         String alphabets[] = Alphabets.getAlphabets();
         for (int i = 0; i < alphabets.length; ++i) {
-            Float value = cHistogram.get(alphabets[i]);
-            float realValue = 0.0f;
+            Double value = cHistogram.get(alphabets[i]);
+            double realValue = 0.0;
             if (value != null) {
-                realValue = value.floatValue();
+                realValue = value.doubleValue();
             }
             System.out.println("[" + alphabets[i] + "] " + realValue);
         }
@@ -73,13 +73,13 @@ public class FrequencyHistogram {
      * @return
      */
     public String getRandomAplhabet() {
-        float randomNumber = (float) Math.random();
+        double randomNumber = Math.random();
         String alphabets[] = Alphabets.getAlphabets();
         for (int i = 0; i < alphabets.length; ++i) {
-            Float value = cHistogram.get(alphabets[i]);
-            float realValue = 0.0f;
+            Double value = cHistogram.get(alphabets[i]);
+            double realValue = 0.0;
             if (value != null) {
-                realValue = value.floatValue();
+                realValue = value.doubleValue();
             }
             if (randomNumber < realValue) {
                 //System.out.println("rv: " + realValue + " rn: " + randomNumber);
@@ -134,7 +134,7 @@ public class FrequencyHistogram {
             return;
         }
 
-        float cumulate = 0.0f;
+        double cumulate = 0.0;
 
         String alphabets[] = Alphabets.getAlphabets();
         for (int i = 0; i < alphabets.length; ++i) {
@@ -143,10 +143,10 @@ public class FrequencyHistogram {
             if (count != null) {
                 realCount = count.intValue();
             }
-            float normalizedFreq = ((float) realCount / (float) totalLetters);
+            double normalizedFreq = ((double) realCount / (double) totalLetters);
             // cumulate the freq after normlaization
             cumulate += normalizedFreq;
-            cHistogram.put(alphabets[i], Float.valueOf(cumulate));
+            cHistogram.put(alphabets[i], Double.valueOf(cumulate));
         }
     }
 
