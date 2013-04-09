@@ -37,8 +37,8 @@ public class AlphabetGenerator {
      * here we genrate our characters based on ctor parameters
      * @return
      */
-    public String[] generateCharacters() {
-        String characters[] = new String[numCharcters];
+    public char[] generateCharacters() {
+        char characters[] = new char[numCharcters];
         // first we generate our vowels
         int numVowelsToGenerate = (int) Math.ceil(Math.random() * (double) maxVowels);
         for (int i = 0; i < numVowelsToGenerate; ++i) {
@@ -61,7 +61,7 @@ public class AlphabetGenerator {
      * @param characters
      * @param times
      */
-    private static void randomShuffle(String characters[], int times) {
+    private static void randomShuffle(char characters[], int times) {
         for (int n = 0; n < times; ++n) {
             int firstPos = getRandomPosition(characters.length);
             int secondPos = getRandomPosition(characters.length, firstPos);
@@ -75,8 +75,8 @@ public class AlphabetGenerator {
      * @param a
      * @param b
      */
-    private static void swapPositions(String charaters[], int a, int b) {
-        String temp = charaters[a];
+    private static void swapPositions(char charaters[], int a, int b) {
+        char temp = charaters[a];
         charaters[a] = charaters[b];
         charaters[b] = temp;
     }

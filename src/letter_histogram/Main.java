@@ -34,13 +34,13 @@ public class Main {
         FrequencyHistogram freqHistogram = new FrequencyHistogram(path);
         // build it!
         freqHistogram.buildHistogram();
-        //freqHistogram.printCumulativeHistogram();
+        freqHistogram.printCumulativeHistogram();
 
         AlphabetGenerator alphaGenerator = new AlphabetGenerator(NUM_CHARACTERS, PERCENT_VOWELS);
         alphaGenerator.setHistogram(freqHistogram);
 
         for (int times = 0; times < 1; ++times) {
-            String characters[] = alphaGenerator.generateCharacters();
+            char characters[] = alphaGenerator.generateCharacters();
             System.out.println("---------------");
             for (int y = 0; y < NUM_ROWS; ++y) {
                 for (int x = 0; x < NUM_COLUMNS; ++x) {
